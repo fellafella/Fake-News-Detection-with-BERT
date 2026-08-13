@@ -2,13 +2,13 @@
 
 Un projet de classification binaire (fake vs. real news) basé sur le fine-tuning de **BERT** (`bert-base-uncased`), avec une baseline **TF-IDF + Régression Logistique** pour comparaison.
 
-## 📊 Dataset
+##  Dataset
 
 [Fake and Real News Dataset](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset) (Kaggle), composé de deux fichiers CSV :
 - `Fake.csv` — articles de fake news
 - `True.csv` — articles de vraies news (Reuters)
 
-## 🧹 Nettoyage des données
+##  Nettoyage des données
 
 Le dataset brut contient plusieurs artefacts qui rendent la tâche trop facile pour un modèle (fuite d'information) :
 - Le tag `(Reuters)` présent presque exclusivement dans les vrais articles
@@ -19,7 +19,7 @@ Le dataset brut contient plusieurs artefacts qui rendent la tâche trop facile p
 
 Une fonction `clean_text()` corrige ces artefacts avant l'entraînement.
 
-## ⚙️ Pipeline
+##  Pipeline
 
 1. **Chargement & nettoyage** des deux CSV
 2. **Préparation** : fusion `title + text`, labellisation (`0` = vrai, `1` = fake), mélange aléatoire
@@ -32,7 +32,7 @@ Une fonction `clean_text()` corrige ces artefacts avant l'entraînement.
 6. **Évaluation** sur le jeu de test
 7. **Baseline de comparaison** : TF-IDF (5000 features) + Régression Logistique
 
-## 📈 Résultats
+##  Résultats
 
 ### BERT fine-tuné (jeu de validation)
 
@@ -50,16 +50,16 @@ Une fonction `clean_text()` corrige ces artefacts avant l'entraînement.
 | Accuracy  | 0.98  |
 | F1 (avg)  | 0.98  |
 
-> ⚠️ Les deux approches atteignent des scores très proches de 99 %, même après nettoyage des artefacts évidents. Cela suggère que le dataset reste "trop facile" (les modèles apprennent probablement encore des indices stylistiques/structurels propres à la source plutôt que du raisonnement factuel), un point à garder en tête pour toute utilisation en conditions réelles.
+>  Les deux approches atteignent des scores très proches de 99 %, même après nettoyage des artefacts évidents. Cela suggère que le dataset reste "trop facile" (les modèles apprennent probablement encore des indices stylistiques/structurels propres à la source plutôt que du raisonnement factuel), un point à garder en tête pour toute utilisation en conditions réelles.
 
-## 🛠️ Stack technique
+##  Stack technique
 
 - Python, Pandas
 - PyTorch
 - Hugging Face `transformers` (BERT) et `datasets`
 - scikit-learn (baseline, métriques, split)
 
-## 🚀 Utilisation
+##  Utilisation
 
 ```bash
 pip install transformers datasets torch scikit-learn pandas
@@ -76,7 +76,7 @@ model = BertForSequenceClassification.from_pretrained("bert_fake_news_model")
 tokenizer = BertTokenizer.from_pretrained("bert_fake_news_model")
 ```
 
-## 📁 Structure du projet
+##  Structure du projet
 
 ```
 .
@@ -84,12 +84,4 @@ tokenizer = BertTokenizer.from_pretrained("bert_fake_news_model")
 └── README.md
 ```
 
-## ⚠️ Limites
 
-- Le dataset provient d'une période et de sources spécifiques (notamment Reuters pour les vrais articles), ce qui peut introduire un biais stylistique/source plutôt qu'un apprentissage purement sémantique.
-- Les très hauts scores (~98-99 %) obtenus à la fois par BERT et par une simple régression logistique TF-IDF indiquent que la tâche telle que posée ici est probablement plus facile qu'une détection de fake news "en conditions réelles".
-- Le modèle n'a pas été testé sur des données hors distribution (autres sources, autres langues, articles plus récents).
-
-## 📝 Licence
-
-À compléter selon vos préférences (MIT, Apache 2.0, etc.).
